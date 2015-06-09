@@ -62,3 +62,10 @@ target/
 data/
 *.sqlite
 *.sqlite3
+.direnv			
+.idea
+.envrc
+.DS_Store
+.direnv/
+ml-1m.zip
+ml-1m/
