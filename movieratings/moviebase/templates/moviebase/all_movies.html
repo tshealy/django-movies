@@ -1,0 +1,14 @@
+{% extends "moviebase/base.html" %}
+{% block content %}
+<body>
+    <h2>The top 20 movies are:</h2>
+    <ol>
+    {% for movie in movies %}
+        <div>
+            <li><a href="{% url 'show_movie' movie.id %}">{{ movie.title }}</a>, Rating: {{ movie.average_rating }} </li>
+        </div>
+    {% endfor %}
+    </ol>
+{% endblock %}
+</body>
+</html>

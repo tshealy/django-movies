@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.db.models import Count
+from django.db.models import Count, Avg
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Movie
@@ -16,8 +16,14 @@ def top_movies(request):
     sorted_movies = sorted(movies_dict.items(), key=operator.itemgetter(1), reverse=True)
     top_20_movies = sorted_movies[:20]
     movies = [m[0] for m in top_20_movies]
-    # top_rated_movies = OrderedDict(sorted(movies_query_dict.items(), key=lambda x: x[1]))[:-20]
     return render(request, "moviebase/top_movies.html", {'movies': movies})
+
+def all_movies(request):
+    movies = Movie.objects.annotate(
+        rating_count=Count('rating'),
+        avg_rating=Avg('rating__rating'),
+    ).filter(rating_count__gte=10).order_by('-avg_rating')[:20]
+    return render(request, 'moviebase/all_movies.html', {"movies": movies})
 
 def show_movie(request, movie_id):
     movie = Movie.objects.get(pk=movie_id)
