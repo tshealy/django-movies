@@ -69,3 +69,4 @@ data/
 .direnv/
 ml-1m.zip
 ml-1m/
+fixtures/

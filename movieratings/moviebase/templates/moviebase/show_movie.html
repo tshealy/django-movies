@@ -1,0 +1,19 @@
+{% extends "moviebase/base.html" %}
+{% block content %}
+<body>
+    <h2>Movie {{ movie.id }}</h2>
+
+    <h3>Ratings</h3>
+    {% for rating in ratings %}
+        <div>
+            <ul>
+                <li>
+                <a href="{% url 'show_rater' rating.rater.id %}"> Rater {{ rating.rater.id }}</a>,
+                    Rating: {{ rating.rating }}
+            </li>
+            </ul>
+        </div>
+    {% endfor %}
+{% endblock %}
+</body>
+</html>

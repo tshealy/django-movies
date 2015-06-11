@@ -6,10 +6,10 @@ class RaterAdmin(admin.ModelAdmin):
     list_display = ['id', 'gender', 'age', 'postal_code']
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ['title', 'genre']
+    list_display = ['title']
 
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ['rating', 'timestamp']
+    list_display = ['movie', 'rating']
 
 admin.site.register(Rater, RaterAdmin)
 admin.site.register(Movie, MovieAdmin)

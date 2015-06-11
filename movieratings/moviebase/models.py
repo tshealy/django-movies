@@ -87,52 +87,55 @@ class Rater(models.Model):
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=100, null=True)
+    title = models.CharField(max_length=255, null=True)
+    #
+    # ACTION = 'Action'
+    # ADVENTURE = 'Adventure'
+    # ANIMATION = 'Animation'
+    # CHILDREN = '''Children's'''
+    # COMEDY = 'Comedy'
+    # CRIME = 'Crime'
+    # DOCUMENTARY = 'Documentary'
+    # DRAMA = 'Drama'
+    # FANTASY = 'Fantasy'
+    # FILM = 'Film-Noir'
+    # HORROR = 'Horror'
+    # MUSICAL = 'Musical'
+    # MYSTERY = 'Mystery'
+    # ROMANCE = 'Romance'
+    # SCIFI = 'Sci-Fi'
+    # THRILLER = 'Thriller'
+    # WAR = 'War'
+    # WESTERN = 'Western'
+    #
+    # GENRE_CHOICE = (
+    #     (ACTION, 'Action'),
+    #     (ADVENTURE, 'Adventure'),
+    #     (ANIMATION, 'Animation'),
+    #     (CHILDREN, '''Children's'''),
+    #     (COMEDY, 'Comedy'),
+    #     (CRIME, 'Crime'),
+    #     (DOCUMENTARY, 'Documentary'),
+    #     (DRAMA, 'Drama'),
+    #     (FANTASY, 'Fantasy'),
+    #     (FILM, 'Film-Noir'),
+    #     (HORROR, 'Horror'),
+    #     (MUSICAL, 'Musical'),
+    #     (MYSTERY, 'Mystery'),
+    #     (ROMANCE, 'Romance'),
+    #     (SCIFI, 'Sci-Fi'),
+    #     (THRILLER, 'Thriller'),
+    #     (WAR, 'War'),
+    #     (WESTERN, 'Western'),
+    # )
+    # genre = models.CharField(choices=GENRE_CHOICE, max_length=20, null=True)
+    @property
+    def average_rating(self):
+        return self.rating_set.all().aggregate(models.Avg('rating'))['rating__avg']
 
-    ACTION = 'Action'
-    ADVENTURE = 'Adventure'
-    ANIMATION = 'Animation'
-    CHILDREN = '''Children's'''
-    COMEDY = 'Comedy'
-    CRIME = 'Crime'
-    DOCUMENTARY = 'Documentary'
-    DRAMA = 'Drama'
-    FANTASY = 'Fantasy'
-    FILM = 'Film-Noir'
-    HORROR = 'Horror'
-    MUSICAL = 'Musical'
-    MYSTERY = 'Mystery'
-    ROMANCE = 'Romance'
-    SCIFI = 'Sci-Fi'
-    THRILLER = 'Thriller'
-    WAR = 'War'
-    WESTERN = 'Western'
-
-    GENRE_CHOICE = (
-        (ACTION, 'Action'),
-        (ADVENTURE, 'Adventure'),
-        (ANIMATION, 'Animation'),
-        (CHILDREN, '''Children's'''),
-        (COMEDY, 'Comedy'),
-        (CRIME, 'Crime'),
-        (DOCUMENTARY, 'Documentary'),
-        (DRAMA, 'Drama'),
-        (FANTASY, 'Fantasy'),
-        (FILM, 'Film-Noir'),
-        (HORROR, 'Horror'),
-        (MUSICAL, 'Musical'),
-        (MYSTERY, 'Mystery'),
-        (ROMANCE, 'Romance'),
-        (SCIFI, 'Sci-Fi'),
-        (THRILLER, 'Thriller'),
-        (WAR, 'War'),
-        (WESTERN, 'Western'),
-    )
-    genre = models.CharField(choices=GENRE_CHOICE, max_length=20, null=True)
 
     def __str__(self):
-        return "Title: {}, Genre: {}"\
-                .format(self.title, self.genre)
+        return "Title: {}".format(self.title)
 
 class Rating(models.Model):
     rater = models.ForeignKey(Rater, null=True)
@@ -153,7 +156,7 @@ class Rating(models.Model):
     )
     rating = models.IntegerField(choices=RATING_CHOICES, null=True)
 
-    timestamp = models.DateTimeField(null=True)
+    # timestamp = models.DateTimeField(null=True)
 
     def __str__(self):
         return "Rater: {} rated movie {} a {}"\
