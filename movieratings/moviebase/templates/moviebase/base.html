@@ -6,12 +6,36 @@
 </head>
 <body>
 <header>
-   <h1><a href="{% url 'top_movies' %}">Welcome to Moviebase</a></h1>
+   <h1><a href="{% url 'all_movies' %}">Welcome to Moviebase</a></h1>
 </header>
+ <body>
+    <div>
+      {{ user }}
+      {% if user.is_anonymous %}
+      <a href="{% url 'django.contrib.auth.views.login' %}">login</a>
+      {% else %}
+      <a href="{% url 'make_rating' %}">Make Rating</a>
+      <a href="{% url 'logout' %}">logout</a>
+      {% endif %}
+    </div>
+<div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        Important:
+                    {% endif %}
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
 {% block content %}
 {% endblock %}
 <footer>
-   <strong>Created at TIY Durham - Python 2015</strong>
+   <strong>Created in TIY Durham - Python 2015</strong>
 </footer>
 </body>
 </html>

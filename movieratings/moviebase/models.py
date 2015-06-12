@@ -1,5 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import User
 
+
+def create_users():
+    for rater in Rater.objects.all():
+        user = User.objects.create_user(
+            "User{}".format(rater.id), "user{}@example.com".format(rater.id), "password")
+        rater.user = user
+        rater.save()
+
+def change_passwords():
+   for user in User.objects.all():
+       password = "password"
+       user.set_password(password)
+       user.save()
 
 class Rater(models.Model):
 
@@ -81,10 +95,12 @@ class Rater(models.Model):
 
     postal_code = models.CharField(max_length=10, null=True)
 
+    user = models.OneToOneField(User, null=True)
+
+
     def __str__(self):
         return "User ID: {}, Job Type: {}, Age: {}"\
                 .format(self.id, self.job, self.age)
-
 
 class Movie(models.Model):
     title = models.CharField(max_length=255, null=True)
