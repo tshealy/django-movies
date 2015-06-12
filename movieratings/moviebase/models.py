@@ -147,8 +147,11 @@ class Movie(models.Model):
     # genre = models.CharField(choices=GENRE_CHOICE, max_length=20, null=True)
     @property
     def average_rating(self):
-        return self.rating_set.all().aggregate(models.Avg('rating'))['rating__avg']
+        return round(self.rating_set.all().aggregate(models.Avg('rating'))['rating__avg'], 2)
 
+    @property
+    def ratings_count(self):
+        return self.rating_set.all().aggregate(models.Count('rating'))['rating__count']
 
     def __str__(self):
         return "Title: {}".format(self.title)

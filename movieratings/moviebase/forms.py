@@ -96,23 +96,27 @@ class RaterForm(forms.ModelForm):
 
 
 class RatingForm(forms.ModelForm):
-    ONE = 1
-    TWO = 2
-    THREE = 3
-    FOUR = 4
-    FIVE = 5
+    # ONE = 1
+    # TWO = 2
+    # THREE = 3
+    # FOUR = 4
+    # FIVE = 5
+    #
+    # RATING_CHOICES=(
+    #     (ONE, 1),
+    #     (TWO, 2),
+    #     (THREE, 3),
+    #     (FOUR, 4),
+    #     (FIVE, 5)
+    # )
+    #
+    # rating = forms.ChoiceField(choices=RATING_CHOICES, label="Rating", initial='', widget=forms.Select(), required=True)
+    #
 
-    RATING_CHOICES=(
-        (ONE, 1),
-        (TWO, 2),
-        (THREE, 3),
-        (FOUR, 4),
-        (FIVE, 5)
-    )
-
-    rating = forms.ChoiceField(choices=RATING_CHOICES, label="Rating", initial='', widget=forms.Select(), required=True)
-
+    # class Meta:
+    #     model = Rating
+    #     fields = ('movie', 'rating', 'rater')
 
     class Meta:
         model = Rating
-        fields = ('movie', 'rating', 'rater')
+        fields = ('rating',)

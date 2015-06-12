@@ -2,18 +2,26 @@
 {% block content %}
 <body>
     <h2>Rater {{ rater.id }}</h2>
+    {% if user.is_anonymous %}
+        <a href="{% url 'django.contrib.auth.views.login' %}">login</a>
 
-    <h3>Ratings</h3>
-    {% for rating in ratings %}
-        <div>
-            <ul>
-                <li>
-                    <a href="{% url 'show_movie' rating.movie.id %}">Movie {{ rating.movie }}</a>,
-                    Rating: {{ rating.rating }}
-            </li>
-            </ul>
-        </div>
-    {% endfor %}
+    {% elif user.rater = rater %}
+        <h3>Ratings</h3>
+        {% for rating in ratings %}
+            <div>
+                <ul>
+                    <li>
+                        <a href="{% url 'show_movie' rating.movie.id %}">Movie {{ rating.movie }}</a>,
+                        Rating: {{ rating.rating }}
+                </li>
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p> You can not see other users page. </p>
+
+    {% endif %}
+
 {% endblock %}
 </body>
 </html>

@@ -31,9 +31,19 @@ def all_movies(request):
 def show_movie(request, movie_id):
     movie = Movie.objects.get(pk=movie_id)
     ratings = movie.rating_set.all()
+    user_ratings = [rating.movie for rating in request.user.rater.rating_set.all()]
+    rating_dict = {rating.movie: rating for rating in request.user.rater.rating_set.all()}
+    if movie in user_ratings:
+        user_rating = rating_dict[movie]
+    else:
+        user_rating = None
+    rating_form = RatingForm()
     return render(request, "moviebase/show_movie.html",
                   {"movie": movie,
-                   "ratings": ratings})
+                   "ratings": ratings,
+                   "rating_form": rating_form,
+                   "user_rating": user_rating
+                   })
 
 def show_rater(request, rater_id):
     rater = Rater.objects.get(pk=rater_id)
@@ -80,13 +90,16 @@ def user_logout(request):
     return HttpResponseRedirect('/moviebase/top-movies/')
 
 
-def make_rating(request):
+def make_rating(request, movie_id):
 
    if request.method == 'POST':
        rating_form = RatingForm(data=request.POST)
 
        if rating_form.is_valid():
-           rating = rating_form.save()
+           movie = Movie.objects.get(pk=movie_id)
+           rating = rating_form.save(commit=False)
+           rating.rater = request.user.rater
+           rating.movie = movie
            rating.save()
 
            messages.add_message(
