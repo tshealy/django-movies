@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core import validators
 
 def create_users():
     for rater in Rater.objects.all():
@@ -15,6 +15,10 @@ def change_passwords():
        user.set_password(password)
        user.save()
 
+def validate_ratings(value):
+    if value > 5 or value < 1 or not isinstance(value, int):
+        raise validators.ValidationError("That is not a valid movie rating!")
+
 class Rater(models.Model):
 
     MALE = 'M'
@@ -24,7 +28,7 @@ class Rater(models.Model):
         (MALE, 'Male'),
         (FEMALE, 'Female'),
     )
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=255, choices=GENDER_CHOICES)
 
     ONE = 1
     EIGHTTEEN = 18
@@ -113,8 +117,6 @@ class Movie(models.Model):
     def ratings_count(self):
         return self.rating_set.all().aggregate(models.Count('rating'))['rating__count']
 
-    genre = models.ManyToManyField(Genre)
-
     def __str__(self):
         return "Title: {}".format(self.title)
 
@@ -135,7 +137,7 @@ class Rating(models.Model):
         (FOUR, 4),
         (FIVE, 5),
     )
-    rating = models.IntegerField(choices=RATING_CHOICES, null=True)
+    rating = models.IntegerField(choices=RATING_CHOICES, null=True, validators=[validate_ratings])
 
     posted_at = models.DateTimeField(null=True)
 
@@ -185,7 +187,9 @@ class Genre(models.Model):
         (WAR, 'War'),
         (WESTERN, 'Western'),
     )
-    genre = models.CharField(choices=GENRE_CHOICE, max_length=20, null=True)
+    genre = models.CharField(choices=GENRE_CHOICE, max_length=255, null=True)
+
+    movie = models.ManyToManyField("Movie")
 
     def __str__(self):
         return self.genre
