@@ -35,13 +35,13 @@ class Rater(models.Model):
     FIFTYSIX = 56
 
     AGE_CHOICES = (
-        (ONE, "Under 18"),
-        (EIGHTTEEN, "18-24"),
-        (TWENTYFIVE, "25-34"),
-        (THIRTYFIVE, "35-44"),
-        (FORTYFIVE, "45-49"),
-        (FIFTY, "50-55"),
-        (FIFTYSIX, "56+"),
+        (1, "Under 18"),
+        (18, "18-24"),
+        (25, "25-34"),
+        (35, "35-44"),
+        (45, "45-49"),
+        (50, "50-55"),
+        (56, "56+"),
     )
 
     age = models.IntegerField(choices=AGE_CHOICES)
