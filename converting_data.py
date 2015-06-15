@@ -1,5 +1,6 @@
 import csv
 import json
+from datetime import datetime
 
 print("Converting users...")
 users = []
@@ -39,14 +40,16 @@ ratings = []
 with open("data/ml-1m/ratings.dat") as infile:
     reader = csv.reader((line.replace("::", ";") for line in infile),
                         delimiter=";")
+
     for idx, row in enumerate(reader):
+        better_time = datetime.fromtimestamp(int(row[3])).strftime('%Y-%m-%d %H:%M:%S')
         ratings.append({"model": "moviebase.Rating",
                         "pk": idx + 1,
                         "fields": {
                             "rater": row[0],
                             "movie": row[1],
                             "rating": row[2],
-                            "posted_at": row[3]
+                            "posted_at": better_time
                         }})
 
 with open("movieratings/fixtures/ratings.json", "w") as outfile:
@@ -65,3 +68,5 @@ with open("data/ml-1m/movies.dat", encoding="windows-1252") as infile:
                         "fields": {
                         "genre": genre_value
                        }})
+with open("movieratings/fixtures/genres.json", "w") as outfile:
+    outfile.write(json.dumps(genres))
