@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Rater
-from .models import Rating
+from .models import Rater, Rating
+
 
 
 class UserForm(forms.ModelForm):
@@ -96,9 +96,39 @@ class RaterForm(forms.ModelForm):
 
 
 class RatingForm(forms.ModelForm):
+    text_rating = forms.CharField(initial='None', required=False)
 
- # text_rating = forms.CharField(max_length=255)
+    class Meta:
+        model = Rating
+        fields = ('rating', 'text_rating')
 
- class Meta:
-    model = Rating
-    fields = ('rating',)
+
+class EditForm(forms.ModelForm):
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    FIVE = 5
+    RATING_CHOICES=(
+        (ONE, 1),
+        (TWO, 2),
+        (THREE, 3),
+        (FOUR, 4),
+        (FIVE, 5)
+    )
+
+    rating = forms.ChoiceField(choices=RATING_CHOICES,
+                               label="Rating",
+                               initial='',
+                               widget=forms.Select(),
+                               required=True)
+
+    class Meta:
+        model = Rating
+        fields = ('rating','text_rating')
+
+
+class DeleteForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        exclude = ('rating', 'model', 'rater')

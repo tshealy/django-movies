@@ -1,10 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db.models import Avg, Count
+from django.contrib.auth.models import User
+
 
 def validating_rating(value):
-    if value > 5 or value < 1 or not isinstance(value, int):
-        raise ValidationError("That is not a valid rating.")
+    if value not in [1, 2, 3, 4, 5]:
+        raise ValidationError
 
 def create_users():
     for rater in Rater.objects.all():
@@ -106,26 +108,56 @@ class Rater(models.Model):
 
     user = models.OneToOneField(User, null=True)
 
+    @property
+    def num_reviews(self):
+        return self.rating_set.count()
+
+    @property
+    def movies_seen(self):
+        ratings = self.rating_set.all()
+        return {rating.movie: rating.rating for rating in ratings}
+
+    @property
+    def average_rating(self):
+        ratings = self.rating_set.all()
+        total = 0
+        if ratings:
+            for rating in ratings:
+                total += rating.rating
+            return round(total/len(ratings), 2)
+        else:
+            return "No ratings"
 
     def __str__(self):
         return "User ID: {}, Job Type: {}, Age: {}"\
                 .format(self.id, self.job, self.age)
 
+
 class Movie(models.Model):
     title = models.CharField(max_length=255, null=True)
 
+    genre = models.ManyToManyField("Genre")
+
     @property
     def average_rating(self):
-        return round(self.rating_set.all().aggregate(models.Avg('rating'))['rating__avg'], 2)
+        #returns a dictionary of {rating__avg: value}
+        average_rating = self.rating_set.all().aggregate(Avg('rating'))
+        if average_rating:
+            #just want the value
+            return average_rating['rating__avg']
+        else:
+            return "No ratings"
 
     @property
     def ratings_count(self):
-        return self.rating_set.all().aggregate(models.Count('rating'))['rating__count']
-
-    genre = models.ManyToManyField("Genre")
+        count_rating = self.rating_set.all().aggregate(Count('rating'))
+        if count_rating:
+            return (count_rating['rating__count'])
+        else:
+            return "No ratings"
 
     def __str__(self):
-        return "Title: {}".format(self.title)
+        return self.title
 
 class Rating(models.Model):
     rater = models.ForeignKey(Rater, null=True)
@@ -153,6 +185,9 @@ class Rating(models.Model):
     def __str__(self):
         return "Rater: {} rated movie {} a {}"\
                 .format(self.rater.id, self.movie, self.rating)
+    class Meta:
+        unique_together = ('rater', 'movie')
+
 
 class Genre(models.Model):
 

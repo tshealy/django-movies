@@ -4,25 +4,24 @@
    <meta charset="UTF-8">
    <title></title>
 </head>
-<body>
 <header>
-   <h1><a href="{% url 'all_movies' %}">Welcome to Moviebase</a></h1>
+   <h1><a href="{% url 'top_movies' %}">Welcome to Moviebase</a></h1>
 </header>
- <body>
+<body>
       {% if user.is_anonymous %}
       <a href="{% url 'django.contrib.auth.views.login' %}">login</a>
 
       {% else %}
-     <a href="{% url 'show_rater' user.rater.id %}">  {{ user }}</a>
+      <a href="{% url 'show_rater' user.rater.id %}">  {{ user }}</a>
       <a href="{% url 'logout' %}">logout</a>
 
       {% endif %}
-      </body>
+</body>
 <div>
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}
                     {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
                         Important:
                     {% endif %}
@@ -34,8 +33,5 @@
 </div>
 {% block content %}
 {% endblock %}
-<footer>
-   <strong>Created in TIY Durham - Python 2015</strong>
-</footer>
 </body>
 </html>
