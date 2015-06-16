@@ -1,6 +1,8 @@
 import csv
 import json
-from datetime import datetime
+from datetime import datetime, timezone
+import pytz
+
 
 print("Converting users...")
 users = []
@@ -49,7 +51,7 @@ with open("data/ml-1m/ratings.dat") as infile:
     reader = csv.reader((line.replace("::", ";") for line in infile),
                         delimiter=";")
     for idx, row in enumerate(reader):
-        better_time = datetime.fromtimestamp(int(row[3])).strftime('%Y-%m-%d %H:%M:%S')
+        better_time = datetime.fromtimestamp(int(row[3]), tz=pytz.timezone('UTC')).isoformat()
         ratings.append({"model": "moviebase.Rating",
                         "pk": idx + 1,
                         "fields": {
