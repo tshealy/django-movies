@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='rater',
             name='job',
-            field=models.CharField(choices=[('other', 'other'), ('academic/educator', 'academic/educator'), ('artist', 'artist'), ('clerical/admin', 'clerical/admin'), ('college/grad student', 'college/grad student'), ('customer service', 'customer service'), ('doctor/health care', 'doctor/health care'), ('executive/managerial', 'executive/managerial'), ('farmer', 'farmer'), ('homemaker', 'homemaker'), ('K-12 student', 'K-12 student'), ('lawyer', 'lawyer'), ('programmer', 'programmer'), ('retired', 'retired'), ('sales/marketing', 'sales/marketing'), ('scientist', 'scientist'), ('self-employed', 'self-employed'), ('technician/engineer', 'technician/engineer'), ('tradesman/craftsman', 'tradesman/craftsman'), ('unemployed', 'unemployed'), ('writer', 'writer')], default='other', max_length=20),
+            field=models.IntegerField(default=0, choices=[(0, 'other'), (1, 'academic/educator'), (2, 'artist'), (3, 'clerical/admin'), (4, 'college/grad student'), (5, 'customer service'), (6, 'doctor/health care'), (7, 'executive/managerial'), (8, 'farmer'), (9, 'homemaker'), (10, 'K-12 student'), (11, 'lawyer'), (12, 'programmer'), (13, 'retired'), (14, 'sales/marketing'), (15, 'scientist'), (16, 'self-employed'), (17, 'technician/engineer'), (18, 'tradesman/craftsman'), (19, 'unemployed'), (20, 'writer')]),
         ),
         migrations.AddField(
             model_name='rater',
