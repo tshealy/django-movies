@@ -18,10 +18,8 @@ def top_movies(request):
     # return render(request, "moviebase/top_movies.html", {'movies': movies})
     movies = Movie.objects.annotate(avg_rating=Avg('rating__rating')).annotate(num_ratings=Count
         ('rating__rating')).filter(num_ratings__gt=30).order_by('-avg_rating')[:20]
-    print("DOES THIS WORK")
     rated_movies = Movie.objects.annotate(avg_rating=Avg('rating__rating')).annotate(num_ratings=Count
         ('rating__rating')).order_by('-num_ratings')[:20]
-    print("DOES THIS WORK")
     return render(request, "moviebase/top_movies.html",
                   {"movies": movies,
                   "rated_movies": rated_movies})

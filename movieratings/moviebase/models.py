@@ -144,7 +144,7 @@ class Movie(models.Model):
         average_rating = self.rating_set.all().aggregate(Avg('rating'))
         if average_rating:
             #just want the value
-            return average_rating['rating__avg']
+            return round(average_rating['rating__avg'], 2)
         else:
             return "No ratings"
 
