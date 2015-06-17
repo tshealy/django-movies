@@ -18,6 +18,13 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="{% url 'top_movies' %}">MovieBase</a>
         </div>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="{% url 'movies_list' %}">All Movies</a>
+                </li>
+                <li>
+                    <p> Genres </p>
+                </li>
+             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_anonymous %}
                 <li>

@@ -1,0 +1,12 @@
+{% extends "moviebase/base.html" %}
+{% load bootstrap3 %}
+{% block content %}
+
+    <h1> Genres:</h1>
+    {% for genre in genres %}
+    <li>
+         <a href="{% url 'show_genre' genre.id %}"> {{ genre }}
+    </li>
+    {% endfor %}
+
+{% endblock %}
