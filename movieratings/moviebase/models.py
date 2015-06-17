@@ -128,6 +128,14 @@ class Rater(models.Model):
         else:
             return "No ratings"
 
+    @property
+    def ratings_count(self):
+        count_rating = self.rating_set.all().aggregate(Count('rating'))
+        if count_rating:
+            return (count_rating['rating__count'])
+        else:
+            return "No ratings"
+
     def __str__(self):
         return "User ID: {}, Job Type: {}, Age: {}"\
                 .format(self.id, self.job, self.age)

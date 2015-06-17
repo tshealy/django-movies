@@ -9,40 +9,33 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 
 def top_movies(request):
-    print("DOES THIS WORK")
-    # movies_query = Movie.objects.all()
-    # movies_dict = {m: m.average_rating for m in movies_query if isinstance(m.average_rating, float)}
-    # sorted_movies = sorted(movies_dict.items(), key=operator.itemgetter(1), reverse=True)
-    # top_20_movies = sorted_movies[:20]
-    # movies = [m[0] for m in top_20_movies]
-    # return render(request, "moviebase/top_movies.html", {'movies': movies})
+
     movies = Movie.objects.annotate(avg_rating=Avg('rating__rating')).annotate(num_ratings=Count
         ('rating__rating')).filter(num_ratings__gt=30).order_by('-avg_rating')[:20]
+
     rated_movies = Movie.objects.annotate(avg_rating=Avg('rating__rating')).annotate(num_ratings=Count
         ('rating__rating')).order_by('-num_ratings')[:20]
+
     return render(request, "moviebase/top_movies.html",
                   {"movies": movies,
                   "rated_movies": rated_movies})
 
-# def all_movies(request):
-#     movies = Movie.objects.annotate(
-#         rating_count=Count('rating'),
-#         avg_rating=Avg('rating__rating'),
-#     ).filter(rating_count__gte=10).order_by('-avg_rating')[:20]
-#     return render(request, 'moviebase/all_movies.html', {"movies": movies})
-
 
 def show_movie(request, movie_id):
+
     movie = Movie.objects.get(pk=movie_id)
     ratings = movie.rating_set.all()
     user_ratings = [rating.movie for rating in request.user.rater.rating_set.all()]
     rating_dict = {rating.movie: rating for rating in request.user.rater.rating_set.all()}
+
     if movie in user_ratings:
         user_rating = rating_dict[movie]
+
     else:
         user_rating = None
     rating_form = RatingForm()
     edit_form = EditForm()
+
     return render(request, "moviebase/show_movie.html",
                   {"movie": movie,
                    "ratings": ratings,
@@ -64,6 +57,23 @@ def show_rater(request, rater_id):
 
     return render(request,
                   "moviebase/rater.html",
+                  {"rater": rater,
+                   "ratings": ratings,
+                   "movies_not_seen": movies_not_seen[:20]})
+
+
+def rater_history(request, rater_id):
+
+    rater = Rater.objects.get(pk=rater_id)
+    ratings = rater.rating_set.all()
+
+    movies = Movie.objects.annotate(avg_rating=Avg('rating__rating')).annotate(num_ratings=Count
+        ('rating__rating')).filter(num_ratings__gt=30).order_by('-avg_rating')
+    movie_set = [rating.movie for rating in ratings]
+    movies_not_seen = [movie for movie in movies if movie not in movie_set]
+
+    return render(request,
+                  "moviebase/rater_history.html",
                   {"rater": rater,
                    "ratings": ratings,
                    "movies_not_seen": movies_not_seen[:20]})

@@ -5,14 +5,6 @@
         <p>Please <a href="{% url 'django.contrib.auth.views.login' %}">login  </a> to see this page.</p>
     {% elif user.rater = rater %}
         <h2>Hello, User {{ rater.id }}</h2>
-        <h4>Your average rating: {{ rater.average_rating }}</h4>
-        <h4>Your total ratings: {{ rater.ratings_count }}</h4>
-        <h4>Your top movie suggestions:</h4>
-        {% for movie in movies_not_seen %}
-                <li><a href="{% url 'show_movie' movie.id %}">{{ movie.title }}</a> Average Rating:
-                    {{ movie.average_rating }}</li>
-
-        {% endfor %}
         <h3>Your Ratings history:</h3>
         {% for rating in ratings %}
             <div>
@@ -38,4 +30,3 @@
         {% endfor %}
     {% endif %}
 {% endblock %}
-

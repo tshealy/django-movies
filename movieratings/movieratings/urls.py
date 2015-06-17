@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^moviebase/$', moviebase_views.top_movies, name="top_movies"),
     url(r'^moviebase/movie/(?P<movie_id>\d+)$', moviebase_views.show_movie, name="show_movie"),
     url(r'^moviebase/rater/(?P<rater_id>\d+)$', moviebase_views.show_rater, name="show_rater"),
+    url(r'^moviebase/rater_history/(?P<rater_id>\d+)$', moviebase_views.rater_history, name="rater_history"),
     url(r'^moviebase/register/$', moviebase_views.user_register, name="user_register"),
     url(r'^moviebase/logout/$', moviebase_views.user_logout, name="logout"),
     url(r'^moviebase/rating/(?P<movie_id>\d+)$', moviebase_views.make_rating, name="make_rating"),
