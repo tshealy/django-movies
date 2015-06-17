@@ -41,6 +41,10 @@
             </ul>
         </div>
     {% endfor %}
+    <div>
+        <img src="{% url 'ratings_chart' movie.id %}">
+    </div>
+
 {% endblock %}
 </body>
 </html>

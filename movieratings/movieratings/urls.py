@@ -32,5 +32,6 @@ urlpatterns = [
     url(r'^moviebase/delete_rating/(?P<movie_id>\d+)/(?P<rating_id>\d+)$', moviebase_views.delete_rating, name="delete_rating"),
     url(r'^moviebase/genre/', moviebase_views.show_genre, name="show_genre"),
     url(r'^moviebase/movies_list/$', moviebase_views.MoviesListView.as_view(), name="movies_list"),
-    url(r'^moviebase/genres_list/$', moviebase_views.GenresListView.as_view(), name="genres_list")
+    url(r'^moviebase/genres_list/$', moviebase_views.GenresListView.as_view(), name="genres_list"),
+    url(r'^moviebase/ratings_chart/(?P<movie_id>\d+)$', moviebase_views.ratings_chart, name="ratings_chart")
 ]

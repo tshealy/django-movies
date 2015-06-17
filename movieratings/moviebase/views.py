@@ -210,3 +210,30 @@ def delete_rating(request, movie_id, rating_id):
     return render(request,
                   "moviebase/movie/{}.html".format(movie_id),
                   {'delete_form': delete_form})
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import matplotlib
+from django.forms import model_to_dict
+matplotlib.style.use('ggplot')
+
+def ratings_chart(request, movie_id):
+    ratings = Rating.objects.filter(movie_id = movie_id)
+    df = pd.DataFrame(model_to_dict(rating) for rating in ratings)
+    df.index = df['posted_at']
+    ratings = df['rating']
+    ratings = ratings.sort_index()
+    series = pd.expanding_mean(ratings).resample('M', how=np.max, fill_method='pad')
+
+    response = HttpResponse(content_type='image/png')
+
+    fig = plt.figure()
+
+    series.plot()
+    plt.title("Average ratings over time")
+    plt.xlabel("")
+    canvas = FigureCanvas(fig)
+    canvas.print_png(response)
+    return response
