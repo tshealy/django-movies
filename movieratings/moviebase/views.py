@@ -25,14 +25,15 @@ def show_movie(request, movie_id):
 
     movie = Movie.objects.get(pk=movie_id)
     ratings = movie.rating_set.all()
-    user_ratings = [rating.movie for rating in request.user.rater.rating_set.all()]
-    rating_dict = {rating.movie: rating for rating in request.user.rater.rating_set.all()}
+    # user_ratings = ratings #[rating.movie for rating in request.user.rater.rating_set.all()]
+    # rating_dict = {rating.movie: rating for rating in request.user.rater.rating_set.all()}
+    user = request.user
 
-    if movie in user_ratings:
-        user_rating = rating_dict[movie]
-
-    else:
+    try:
+        user_rating = Rating.objects.get(rater_id=user.rater.id, movie_id=movie_id)
+    except:
         user_rating = None
+
     rating_form = RatingForm()
     edit_form = EditForm()
 
