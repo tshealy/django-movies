@@ -32,7 +32,7 @@
                         {{ rating.rating }}</p>
                 {% else %}
                     <p>Title: <a href="{% url 'show_movie' rating.movie.id %}">{{ rating.movie.title }}</a> Rating:
-                    {{ rating.rating }}, Text Rating: {{rating.text_rating}}</p>
+                    {{ rating.rating }}</p>
                 {% endif %}
             </div>
         {% endfor %}

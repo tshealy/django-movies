@@ -3,7 +3,7 @@
 {% block content %}
    <h2>Add a new rating</h2>
 
-   <form method="POST" action="{% url 'make_rating' %}">
+    <form method="POST" action="{% url 'make_rating' %}">
        {% csrf_token %}
        {{ rating_form.as_p }}
 

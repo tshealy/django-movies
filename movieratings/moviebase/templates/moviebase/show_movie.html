@@ -13,8 +13,8 @@
     {% else %}
     <h2>Add a new rating</h2>
     <form method="POST" action="{% url 'make_rating' movie.id %}">
-       {% csrf_token %}
-       {{ rating_form.as_p }}
+        {% csrf_token %}
+        {{ rating_form.as_p }}
 
        <!-- Provide a button to click to submit the form. -->
        <input type="submit" name="submit" value="Add rating"/>
