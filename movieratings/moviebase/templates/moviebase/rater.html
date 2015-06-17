@@ -25,6 +25,7 @@
         <h3>User {{ rater.id }} is from zip code {{ rater.postal_code }}</h3>
         <h4>Average rating: {{ rater.average_rating }}</h4>
         <h4>Total ratings: {{ rater.ratings_count }}</h4>
+        <h4> Rating History:</h4>
         {% for rating in ratings %}
             <div>
                 {% if rating.text_rating == 'None' %}

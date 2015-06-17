@@ -9,6 +9,14 @@
 
     {% elif user_rating %}
     <p> You have already reviewed {{ movie }} you gave it a {{ user_rating.rating }}</p>
+    <h2>Edit your rating</h2>
+    <form method="POST" action="{% url 'edit_rating' movie.id user_rating.id %}">
+        {% csrf_token %}
+        {{ edit_form.as_p }}
+
+       <!-- Provide a button to click to submit the form. -->
+       <input type="submit" name="submit" value="Edit rating"/>
+    </form>
 
     {% else %}
     <h2>Add a new rating</h2>

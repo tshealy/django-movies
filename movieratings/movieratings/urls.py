@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^moviebase/rating/(?P<movie_id>\d+)$', moviebase_views.make_rating, name="make_rating"),
     url(r'^moviebase/edit_rating/(?P<movie_id>\d+)/(?P<rating_id>\d+)$', moviebase_views.edit_rating, name="edit_rating"),
     url(r'^moviebase/delete_rating/(?P<movie_id>\d+)/(?P<rating_id>\d+)$', moviebase_views.delete_rating, name="delete_rating"),
+    url(r'^moviebase/movies_list/$', moviebase_views.MoviesListView.as_view(), name="movies_list")
 ]

@@ -7,6 +7,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
+
+
+class MoviesListView(ListView):
+    model = Movie
+    paginate_by = 20
+    context_object_name = 'movies'
+    #use content_object_name instaed of object_list
+    template_name = 'moviebase/movies_list.html'
+
 
 def top_movies(request):
 
@@ -24,8 +34,9 @@ def top_movies(request):
 def show_movie(request, movie_id):
 
     movie = Movie.objects.get(pk=movie_id)
-    ratings = movie.rating_set.all()
-    # user_ratings = ratings #[rating.movie for rating in request.user.rater.rating_set.all()]
+    ratings = Rating.objects.filter(movie=movie).select_related('rater').all()
+    # ratings = movie.rating_set.all().select_related()
+    # user_ratings = [rating.movie for rating in request.user.rater.rating_set.all()]
     # rating_dict = {rating.movie: rating for rating in request.user.rater.rating_set.all()}
     user = request.user
 
@@ -49,8 +60,7 @@ def show_movie(request, movie_id):
 def show_rater(request, rater_id):
 
     rater = Rater.objects.get(pk=rater_id)
-    ratings = rater.rating_set.all()
-
+    ratings = rater.rating_set.all().select_related('movie')
     movies = Movie.objects.annotate(avg_rating=Avg('rating__rating')).annotate(num_ratings=Count
         ('rating__rating')).filter(num_ratings__gt=30).order_by('-avg_rating')
     movie_set = [rating.movie for rating in ratings]
@@ -66,7 +76,7 @@ def show_rater(request, rater_id):
 def rater_history(request, rater_id):
 
     rater = Rater.objects.get(pk=rater_id)
-    ratings = rater.rating_set.all()
+    ratings = rater.rating_set.all().select_related('movie')
 
     movies = Movie.objects.annotate(avg_rating=Avg('rating__rating')).annotate(num_ratings=Count
         ('rating__rating')).filter(num_ratings__gt=30).order_by('-avg_rating')
