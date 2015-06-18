@@ -23,10 +23,17 @@ class GenresListView(ListView):
     context_object_name = 'genres'
     template_name = 'moviebase/genres_list.html'
 
-def show_genre(request):
-    genres = Genre.objects.all()
+def show_genre(request, genre_id):
+    genre = Genre.objects.get(pk=genre_id)
+    movie = genre.movie_set.all().select_related()
+    top_movies = movie.annotate(avg_rating=Avg('rating__rating')).annotate(num_ratings=Count
+        ('rating__rating')).filter(num_ratings__gt=30).order_by('-avg_rating')[:20]
     return render(request, "moviebase/show_genre.html",
-                  {"genres": genres})
+                  {"genre": genre,
+                  "movie": movie,
+                  "top_movies": top_movies})
+
+
 
 def top_movies(request):
 
