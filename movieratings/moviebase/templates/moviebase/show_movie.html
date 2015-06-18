@@ -2,7 +2,7 @@
 {% block content %}
 <body>
 <div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-8">
+    <div class="col-sm-4">
         <h2>Movie {{ movie.title }}</h2>
         {% if user.is_anonymous %}
              <a href="{% url 'django.contrib.auth.views.login' %}">login</a>
@@ -38,7 +38,7 @@
                 </ul>
             </div>
         {% endfor %}</div>
-    <div class="col-xs-6 col-md-4">
+    <div class="col-sm-8">
             <img src="{% url 'ratings_chart' movie.id %}">
         </div>
     </div>
